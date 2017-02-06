@@ -1,3 +1,8 @@
+#Author @ Mohammed 26/01/2017
+
+#Load Libraries
+source("Libraries.R")
+
 data<-read.csv("FINALE_MOD_DATA_WITHOUT_NA.csv",header = T)
 data<-data[,-1]
 data<-data[,-5]
@@ -29,7 +34,7 @@ for(i in 1:32561){
 
 set.seed(999)
 #Splitting data into training and testing
-train<-sample(1:32561,26048,replace = F)
+train<-sample(1:32561,22793,replace = F)
 test<--train
 
 training_data<-train_test[train,]
@@ -56,7 +61,7 @@ xgb_param_adult = list(
 res = xgb.cv(xgb_param_adult,
              dtrain,
              nrounds=700,   # changed
-             nfold=3,           # changed
+             nfold=10,           # changed
              early_stopping_rounds=50,
              print_every_n = 10,
              verbose= 1)
@@ -68,4 +73,4 @@ xgb.fit = xgb.train(xgb_param_adult, dtrain, 500)
 preds <- ifelse(predict(xgb.fit, newdata=as.matrix(testing_data[,-14])) >= 0.5, 1, 0)
 caret::confusionMatrix(testing_data[,14], preds, mode = "prec_recall")
 
-#========87.39% accuracy
+#========87.02% accuracy

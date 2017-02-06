@@ -1,7 +1,5 @@
-#Author @ Mohammed 23/12/2016
+#Author @ Mohammed 26/01/2017
 #Code used to Fetch/install/Load all libraries required
-
-#Set
 
 print("============== Beginning to load libraries  ===================")
 
