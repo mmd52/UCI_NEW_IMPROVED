@@ -29,7 +29,7 @@ for(i in 1:32561){
 data<-train_test
 set.seed(999)
 #Splitting data into training and testing
-train<-sample(1:32561,26049,replace = F)
+train<-sample(1:32561,22793,replace = F)
 test<--train
 
 training_data<-data[train,]
@@ -44,5 +44,10 @@ vif(logit.fit)
 preds<-ifelse(predict(logit.fit,newdata=testing_data[,-14],type="response")>=0.5,1,0)
 table(testing_data[,14],preds)
 caret::confusionMatrix(testing_data[,14], preds, mode = "prec_recall")
+
+auc<-roc(testing_data[,14],ifelse(predict(logit.fit,newdata=testing_data[,-14],type="response")>=0.5,1,0))
+print(auc)
+plot(roc(testing_data[,14],ifelse(predict(logit.fit,newdata=testing_data[,-14],type="response")>=0.5,1,0)),print.auc=T)
+
 
 #Accuracy is 85.37%

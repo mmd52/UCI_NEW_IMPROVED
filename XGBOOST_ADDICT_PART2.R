@@ -33,12 +33,11 @@ for(i in 1:32561){
 }
 
 set.seed(999)
-#Splitting data into training and testing
-train<-sample(1:32561,22793,replace = F)
-test<--train
-
-training_data<-train_test[train,]
-testing_data<-train_test[test,]
+splitIndex<-createDataPartition(train_test$income,p=.70,list=F,times=1)
+train<-train_test[splitIndex,]
+test<-train_test[-splitIndex,]
+training_data<-train
+testing_data<-test
 
 #====================================================================
 ######################## Preparing for xgboost
@@ -49,13 +48,14 @@ dtest = xgb.DMatrix(as.matrix(testing_data[,-14]))
 
 xgb_param_adult = list(
   nrounds = c(700),
-  eta = 0.075,#eta between(0.01-0.2)
-  max_depth = 6, #values between(3-10)
+  eta = 0.057,#eta between(0.01-0.2)
+  max_depth = 4, #values between(3-10)
   subsample = 0.7,#values between(0.5-1)
   colsample_bytree = 0.7,#values between(0.5-1)
   num_parallel_tree=1,
   objective='binary:logistic',
-  min_child_weight = 1
+  min_child_weight = 1,
+  booster='gbtree'
 )
 
 res = xgb.cv(xgb_param_adult,
@@ -74,3 +74,7 @@ preds <- ifelse(predict(xgb.fit, newdata=as.matrix(testing_data[,-14])) >= 0.5, 
 caret::confusionMatrix(testing_data[,14], preds, mode = "prec_recall")
 
 #========87.02% accuracy
+#===========================AUC
+auc<-roc(testing_data[,14],predict(xgb.fit,dtest))
+print(auc)
+plot(auc,print.auc=T)

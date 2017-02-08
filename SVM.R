@@ -10,7 +10,7 @@ View(head(data))
 
 set.seed(999)
 #Splitting data into training and testing
-train<-sample(1:32561,26048,replace = F)
+train<-sample(1:32561,22793,replace = F)
 test<--train
 
 training_data<-data[train,]
@@ -20,3 +20,8 @@ testing_data<-data[test,]
 model1.svm <- svm(income ~ ., data = training_data)
 preds = predict(model1.svm, testing_data[,-14])
 caret::confusionMatrix(testing_data[,14], preds, mode = "prec_recall")
+#==85.8% Accuracy
+
+auc<-roc(as.numeric(testing_data[,14]),as.numeric(predict(model1.svm, testing_data[,-14])))
+print(auc)
+plot(auc,print.auc=T)

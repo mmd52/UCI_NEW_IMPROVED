@@ -52,4 +52,10 @@ checkInstallLoad("nnet")
 checkInstallLoad("car")
 checkInstallLoad("Ckmeans.1d.dp")
 
+#For Boruta
+checkInstallLoad("Boruta")
+
+#For Smote
+checkInstallLoad("DMwR")
+
 print("============== Completed loading libraries  ===================")

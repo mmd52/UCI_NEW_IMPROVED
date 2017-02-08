@@ -40,8 +40,13 @@ test<--train
 training_data<-train_test[train,]
 testing_data<-train_test[test,]
 
-knn_pred<-knn(training_data[,-14],testing_data[,-14],training_data[,14],3)
+knn_pred<-knn(training_data[,-14],testing_data[,-14],training_data[,14],9)
 
 caret::confusionMatrix(testing_data[,14], knn_pred, mode = "prec_recall")
+
+auc<-roc(testing_data[,14],abc)
+print(auc)
+plot(roc(testing_data$income,abc),print.auc=T)
+
 
 #Accuracy is 75.91%

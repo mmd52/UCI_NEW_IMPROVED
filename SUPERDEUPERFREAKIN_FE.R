@@ -4,7 +4,7 @@
 source("Libraries.R")
 
 #Load data
-#Note before loading this file data.csv I have manually changes the 
+#Note before loading this file data.csv I have manually changed the 
 #'?' mark values to NA in the csv file for ease of processing
 #The same follows for all columns that have missing values
 data<-read.csv("despo.csv",header = T)
